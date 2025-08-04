@@ -2,26 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class SoundChanger : MonoBehaviour
 {
     [SerializeField] private AudioMixer _mixer;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private string _mixerGroupName;
 
     private int _minVolumeValue = -80;
     private int _maxVolumeValue;
 
-    public void ChangeMasterVolume(float volume) 
+    private void OnEnable()
     {
-        _mixer.SetFloat("MasterVolume", Mathf.Lerp(_minVolumeValue, _maxVolumeValue, volume));
+        _slider.onValueChanged.AddListener(ChangeVolume);
     }
 
-    public void ChangeBackgroundVolume(float volume)
+    private void OnDisable()
     {
-        _mixer.SetFloat("BackgroundVolume", Mathf.Lerp(_minVolumeValue, _maxVolumeValue, volume));
+        _slider.onValueChanged.RemoveListener(ChangeVolume);
     }
 
-    public void ChangeButtonVolume(float volume)
+    public void ChangeVolume(float volume) 
     {
-        _mixer.SetFloat("ButtonVolume", Mathf.Lerp(_minVolumeValue, _maxVolumeValue, volume));
+        _mixer.SetFloat(_mixerGroupName, Mathf.Lerp(_minVolumeValue, _maxVolumeValue, volume));
     }
 }

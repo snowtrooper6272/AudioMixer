@@ -8,15 +8,18 @@ public class SoundEngineer : MonoBehaviour
 
     public AudioSource CurrentAudio { get; private set; }
 
-    public void StartClip(AudioSource audio)
+    public void SwitchClip(AudioSource audio)
     {
         CurrentAudio?.Stop();
         CurrentAudio = audio;
         CurrentAudio.Play();
     }
 
-    public void Turn() 
+    public void Switch(bool isOn) 
     {
-        _switcher.Turn(CurrentAudio);
+        if (isOn)
+            _switcher.SwitchOn();
+        else
+            _switcher.SwitchOff();
     }
 }
